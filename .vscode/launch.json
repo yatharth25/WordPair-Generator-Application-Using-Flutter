@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "wordpair",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "wordpair (Flutter Tests)",
+            "program": "D:/Android Projects/Flutter Apps/wordpair/lib/main.dart",
+            "request": "launch",
+            "type": "dart"
+        }
+    ]
+}
