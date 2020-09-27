@@ -73,7 +73,7 @@ class RandomWordsState extends State<RandomWords> {
     return Scaffold(
       appBar: AppBar(
           centerTitle: true,
-          title: Text("WordPair Generator"),
+          title: Text("WordPair"),
           actions: <Widget>[
             IconButton(icon: Icon(Icons.list), onPressed: _SavedPage)
           ]),

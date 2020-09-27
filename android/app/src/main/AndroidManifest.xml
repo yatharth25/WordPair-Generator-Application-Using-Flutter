@@ -7,8 +7,8 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="wordpair"
-        android:icon="@mipmap/ic_launcher">
+        android:label="WordPair"
+        android:icon="@mipmap/wpicon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
