@@ -1,6 +1,8 @@
-# wordpair
+# WordPair
 
 A new Flutter project.
+
+A basic Flutter Application which generates infinite english WordPairs for people who loves to learn new words and it also gives the option to Save favorite words and see them.
 
 ## Getting Started
 
