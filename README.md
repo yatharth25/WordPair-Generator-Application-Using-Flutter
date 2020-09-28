@@ -25,3 +25,11 @@ samples, guidance on mobile development, and a full API reference.
 6) Connect your emulator
 7) Start debugging
 8) Type 'flutter run' to run it and 'r' to hot reload the changes
+
+## You can find bug or Features you can add
+1) A creative Login/Signup page
+2) Animated/Video Splash Screen
+3) Remove feature from favourite(Saved Wordpair page )
+4) Word description view on clicking every word
+5) Adding Dashboard
+6) Or you can add any other feature but you need to explain it
