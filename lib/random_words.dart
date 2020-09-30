@@ -13,6 +13,7 @@ class RandomWordsState extends State<RandomWords> {
 
   Widget _buildList() {
     return ListView.builder(
+        physics: BouncingScrollPhysics(),
         padding: const EdgeInsets.all(16.0),
         itemBuilder: (context, item) {
           if (item.isOdd) return Divider();
@@ -29,7 +30,6 @@ class RandomWordsState extends State<RandomWords> {
 
   Widget _buildRow(WordPair pair) {
     final alreadySaved = _savedWordPairs.contains(pair);
-
     return ListTile(
       title: Text(pair.asPascalCase, style: TextStyle(fontSize: 17.0)),
       trailing: Icon(alreadySaved ? Icons.favorite : Icons.favorite_border,
@@ -52,6 +52,15 @@ class RandomWordsState extends State<RandomWords> {
       final Iterable<ListTile> tile = _savedWordPairs.map((WordPair pair) {
         return ListTile(
           title: Text(pair.asPascalCase, style: TextStyle(fontSize: 16.0)),
+          trailing: IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                setState(() {
+                  _savedWordPairs.remove(pair);
+                  Navigator.of(context).pop();
+                  _SavedPage();
+                });
+              }),
         );
       });
 
@@ -63,9 +72,12 @@ class RandomWordsState extends State<RandomWords> {
             centerTitle: true,
             title: Text('Saved WordPairs'),
           ),
-          body: ListView(
-            children: divided,
-          ));
+          body: _savedWordPairs.length == 0
+              ? empty()
+              : ListView(
+                  children: divided,
+                  physics: BouncingScrollPhysics(),
+                ));
     }));
   }
 
@@ -80,4 +92,12 @@ class RandomWordsState extends State<RandomWords> {
       body: _buildList(),
     );
   }
+}
+
+Widget empty() {
+  return Center(
+      child: Text("You have not added anything to favorite",
+          style: TextStyle(
+            fontSize: 20,
+          )));
 }
