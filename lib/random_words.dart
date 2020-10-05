@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 import 'package:flutter/rendering.dart';
+import 'package:wordpair/login.dart';
+import 'package:wordpair/welcome.dart';
 import 'package:wordpair/worddef.dart';
 
 class RandomWords extends StatefulWidget {
@@ -92,15 +94,27 @@ class RandomWordsState extends State<RandomWords> {
   }
 
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          centerTitle: true,
-          title: Text("WordPair"),
-          actions: <Widget>[
-            IconButton(icon: Icon(Icons.list), onPressed: _SavedPage)
-          ]),
-      body: _buildList(),
-    );
+    return WillPopScope(
+        onWillPop: () async => false,
+        child: Scaffold(
+          appBar: AppBar(
+              leading: IconButton(
+                  icon: Icon(Icons.favorite_border),
+                  onPressed: () => _SavedPage()),
+              centerTitle: true,
+              title: Text("WordPair"),
+              actions: <Widget>[
+                IconButton(
+                    icon: Icon(Icons.power_settings_new),
+                    onPressed: () {
+                      Navigator.popUntil(
+                          context, ModalRoute.withName("HomePage"));
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => HomePage()));
+                    })
+              ]),
+          body: _buildList(),
+        ));
   }
 }
 
