@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
 import 'package:flutter/rendering.dart';
-import 'package:wordpair/login.dart';
+import 'package:flutter_session/flutter_session.dart';
 import 'package:wordpair/welcome.dart';
 import 'package:wordpair/worddef.dart';
+import 'dart:convert';
 
 class RandomWords extends StatefulWidget {
   @override
@@ -106,7 +107,10 @@ class RandomWordsState extends State<RandomWords> {
               actions: <Widget>[
                 IconButton(
                     icon: Icon(Icons.power_settings_new),
-                    onPressed: () {
+                    onPressed: () async {
+                      var session = FlutterSession();
+                      await session.set("email", '');
+                      await session.set("idToken", '');
                       Navigator.popUntil(
                           context, ModalRoute.withName("HomePage"));
                       Navigator.of(context).push(
