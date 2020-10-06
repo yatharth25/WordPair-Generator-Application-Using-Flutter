@@ -187,6 +187,5 @@ class _LoginPageState extends State<LoginPage> {
         valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
       );
     }
-    ;
   }
 }

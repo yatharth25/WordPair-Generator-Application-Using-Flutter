@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wordpair/authenticate/authentication.dart';
+import 'welcome.dart';
 import 'package:provider/provider.dart';
 
 class SignupPage extends StatefulWidget {
@@ -8,19 +9,26 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+  int _state = 0;
   final email = TextEditingController();
   final password = TextEditingController();
 
   void _signup() async {
+    ;
     final response = await Authentication()
         .register(email.text.toString(), password.text.toString());
     if (response['status'] == 'false') {
       var errorMessage = "This email already exist!. Choose another.";
       _showerror(errorMessage);
+      setState(() {
+        _state = 0;
+      });
     } else {
-      var errorMessage = "Your account has been created.";
-      _showerror(errorMessage);
-      Navigator.of(context).pop();
+      setState(() {
+        _state = 0;
+      });
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => HomePage()));
     }
   }
 
@@ -106,20 +114,17 @@ class _SignupPageState extends State<SignupPage> {
                       child: MaterialButton(
                         minWidth: double.infinity,
                         height: 60,
-                        onPressed: () {
-                          _signup();
+                        onPressed: () => {
+                          setState(() {
+                            _state = 1;
+                          }),
+                          _signup()
                         },
-                        color: Colors.deepPurple[900],
+                        color: Colors.purple[900],
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50)),
-                        child: Text(
-                          "Sign up",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 18),
-                        ),
+                        child: setUpButtonChild("Signup", _state),
                       ),
                     ),
                   ],
@@ -137,6 +142,20 @@ class _SignupPageState extends State<SignupPage> {
         ),
       ),
     );
+  }
+
+  Widget setUpButtonChild(String name, _state) {
+    if (_state == 0) {
+      return new Text(
+        name,
+        style: TextStyle(
+            color: Colors.white, fontWeight: FontWeight.w600, fontSize: 18),
+      );
+    } else {
+      return CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+      );
+    }
   }
 
   Widget makeInput({control, label, obscureText = false}) {
