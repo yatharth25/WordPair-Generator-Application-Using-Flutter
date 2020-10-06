@@ -1,7 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:wordpair/authenticate/authentication.dart';
 import 'package:wordpair/random_words.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  int _state = 0;
+  final email = TextEditingController();
+
+  final password = TextEditingController();
+
+  void _login() async {
+    final response = await Authentication()
+        .signin(email.text.toString(), password.text.toString());
+    if (response['status'] == 'false') {
+      var errorMessage = "Authentication failed. Please try again";
+      _showerror(errorMessage);
+      setState(() {
+        _state = 0;
+      });
+    } else {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => RandomWords()));
+    }
+  }
+
+  void _showerror(String msg) {
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              title: Text("An error occured"),
+              content: Text(msg),
+              actions: [
+                FlatButton(
+                    onPressed: () => Navigator.of(ctx).pop(),
+                    child: Text("Okay"))
+              ],
+            ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,8 +92,11 @@ class LoginPage extends StatelessWidget {
                     padding: EdgeInsets.symmetric(horizontal: 40),
                     child: Column(
                       children: <Widget>[
-                        makeInput(label: "Email"),
-                        makeInput(label: "Password", obscureText: true),
+                        makeInput(control: email, label: "Email"),
+                        makeInput(
+                            control: password,
+                            label: "Password",
+                            obscureText: true),
                       ],
                     ),
                   ),
@@ -73,20 +116,16 @@ class LoginPage extends StatelessWidget {
                         minWidth: double.infinity,
                         height: 60,
                         onPressed: () => {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => RandomWords()))
+                          setState(() {
+                            _state = 1;
+                          }),
+                          _login()
                         },
                         color: Colors.purple[900],
                         elevation: 0,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50)),
-                        child: Text(
-                          "Login",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 18),
-                        ),
+                        child: setUpButtonChild("Login", _state),
                       ),
                     ),
                   ),
@@ -106,7 +145,7 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Widget makeInput({label, obscureText = false}) {
+  Widget makeInput({control, label, obscureText = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -119,6 +158,7 @@ class LoginPage extends StatelessWidget {
           height: 5,
         ),
         TextField(
+          controller: control,
           obscureText: obscureText,
           decoration: InputDecoration(
             contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
@@ -133,5 +173,19 @@ class LoginPage extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Widget setUpButtonChild(String name, _state) {
+    if (_state == 0) {
+      return new Text(
+        name,
+        style: TextStyle(
+            color: Colors.white, fontWeight: FontWeight.w600, fontSize: 18),
+      );
+    } else {
+      return CircularProgressIndicator(
+        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+      );
+    }
   }
 }
